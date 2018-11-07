@@ -7,3 +7,7 @@ spring:
 
 mybatis:
   type-aliases-package: com.lypgod.orm.test.mybatis.model.entity
+
+logging:
+  level:
+    com.lypgod.orm.test.mybatis: debug

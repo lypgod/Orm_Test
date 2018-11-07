@@ -74,6 +74,11 @@ public class UserMapperTest {
     @Test
     public void findUserByIdTest() {
         assertEquals(this.userMapper.findUserById(1001).getUsername(), "User1");
-        assertEquals(((User) this.sqlSession.selectOne("com.lypgod.orm.test.mybatis.model.mapper.UserMapper.findUserById", 1002)).getUsername(), "User2");
+    }
+
+    @Test
+    public void findindUserByNameLikeTest() {
+        List<User> users = this.userMapper.findUserByNameLike("%2%");
+        assertEquals(users.size(), 1);
     }
 }
