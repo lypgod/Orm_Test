@@ -6,7 +6,9 @@ spring:
     password:
 
 mybatis:
-  type-aliases-package: com.lypgod.orm.test.mybatis.model.entity
+  type-aliases-package: com.lypgod.orm.test.mybatis.model
+  configuration:
+    map-underscore-to-camel-case: true
 
 logging:
   level:
