@@ -1,20 +1,17 @@
 package com.lypgod.orm.test.mybatis.model.mapper;
 
 import com.lypgod.orm.test.mybatis.model.entity.User;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class OrderMapperTest {
     @Resource
     private OrderMapper orderMapper;

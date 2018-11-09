@@ -1,16 +1,15 @@
 package com.lypgod.orm.test.mybatis.model.mapper;
 
+import com.github.pagehelper.PageHelper;
 import com.lypgod.orm.test.mybatis.model.entity.User;
 import com.lypgod.orm.test.mybatis.model.vo.UserQueryVO;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -23,7 +22,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserMapperTest {
     @Resource
     private UserMapper userMapper;
@@ -136,12 +134,17 @@ public class UserMapperTest {
         assertEquals(this.userMapper.findUserWithOrdersById(1001).getOrders().size(), 2);
     }
 
-
-    @Ignore
     @Test
-    public void generateUsersTest() {
-        final int[] index = {4};
+    public void findAllUsersWithRolesTest() {
+        this.generateUsers(20);
+        PageHelper
+                .startPage(3, 10).doSelectPage(() -> this.userMapper.findAllUsersWithRoles())
+                .getResult()
+                .forEach(System.out::println);
+    }
 
+    public void generateUsers(int userCount) {
+        final int[] index = {4};
         this.userMapper.insertUsers(
                 Stream.generate(() -> {
                             User user = new User();
@@ -151,8 +154,50 @@ public class UserMapperTest {
                             index[0]++;
                             return user;
                         }
-                ).limit(20).collect(Collectors.toList()));
+                ).limit(userCount).collect(Collectors.toList())
+        );
+    }
 
-        this.userMapper.findAllUsers().forEach(System.out::println);
+    @Test
+    public void autoMapperSelectAllUserTest() {
+        this.generateUsers(20);
+        User user = new User();
+        user.setPageNum(3);
+        user.setPageSize(10);
+        if (user.getPageNum() != 0 && user.getPageSize() != 0) {
+            PageHelper.startPage(user.getPageNum(), user.getPageSize());
+        }
+        assertEquals(this.userMapper.selectAll().size(), 3);
+    }
+
+    @Test
+    public void autoMapperConditionalSelectUserTest() {
+        assertEquals(this.userMapper.selectByPrimaryKey(1001).getUsername(), "User1");
+
+        Example example = new Example(User.class);
+        example.createCriteria().andGreaterThan("id", 1001);
+        assertEquals(this.userMapper.selectByExample(example).size(), 2);
+    }
+
+    @Test
+    public void autoMapperDeleteUserTest() {
+        assertEquals(this.userMapper.findAllUsers().size(), 3);
+        assertEquals(this.userMapper.deleteByPrimaryKey(1003), 1);
+        assertEquals(this.userMapper.findAllUsers().size(), 2);
+    }
+
+    @Test
+    public void autoMapperSaveOrUpdateUserTest() {
+        User user = new User();
+        user.setUsername("new User");
+        user.setPassword("new Password");
+        this.userMapper.save(user);
+        assertEquals(this.userMapper.selectAll().size(), 4);
+
+        user.setId(1001);
+        user.setUsername("autoMapperSaveOrUpdateUserTest");
+        user.setPassword("autoMapperSaveOrUpdateUserTest");
+        this.userMapper.save(user);
+        assertEquals(this.userMapper.selectByPrimaryKey(1001).getUsername(), "autoMapperSaveOrUpdateUserTest");
     }
 }

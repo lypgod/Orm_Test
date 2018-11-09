@@ -3,12 +3,13 @@ package com.lypgod.orm.test.mybatis.model.entity;
 import lombok.Data;
 
 import javax.persistence.Id;
+import java.util.List;
 
 @Data
-public class Order {
+public class Role {
     @Id
     private Integer id;
     private String name;
-    private Integer quantity;
-    private User user;
+
+    private List<User> users;
 }

@@ -19,11 +19,5 @@ public interface OrderMapper {
 
     @Select("SELECT * FROM `ORDER` WHERE user_id = #{id}")
     List<Order> findOrdersByUser(User user);
-//
-//    @SelectProvider(type = SqlProvider.class, method = "sqlFindUserByNameLike")
-//    List<User> findUserByNameLike(String str1);
-//
-//    List<User> findUserByCondition(UserQueryVO queryUser);
-//
-//    int deleteBatchUser(List<Integer> ids);
+
 }

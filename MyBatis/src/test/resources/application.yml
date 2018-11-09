@@ -10,6 +10,18 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+mapper:
+  mappers:
+    - com.lypgod.orm.test.mybatis.util.MyMapper
+  style: camelhumpAndUppercase
+  identity: MYSQL
+
 logging:
   level:
     com.lypgod.orm.test.mybatis: debug
