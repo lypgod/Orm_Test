@@ -10,8 +10,7 @@ import javax.persistence.*;
 @ToString(exclude = "user")
 @Entity
 @DynamicInsert
-@Table(name = "[ORDER]")
-public class Order {
+public class Passport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -19,9 +18,6 @@ public class Order {
     @Column(nullable = false)
     private String name;
 
-    @Column(columnDefinition = "INTEGER DEFAULT 0")
-    private Integer quantity;
-
-    @ManyToOne()
+    @OneToOne()
     private User user;
 }
