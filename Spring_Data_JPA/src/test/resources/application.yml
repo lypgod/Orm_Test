@@ -23,15 +23,21 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        show_sql: false
+        show_sql: true
         format_sql: true
+  output:
+    ansi:
+      enabled: always
 
 logging:
   level:
     com.lypgod.orm.test.jpa: WARN
-    jdbc.sqlonly: INFO
-    jdbc.sqltiming: ERROR
-    jdbc.audit: ERROR
-    jdbc.resultset: ERROR
-    jdbc.connection: ERROR
-    jdbc.resultsettable: INFO
+    org.hibernate:
+      type.descriptor.sql.BasicBinder: TRACE
+    jdbc:
+      sqlonly: OFF
+      sqltiming: OFF
+      audit: ERROR
+      resultset: ERROR
+      connection: ERROR
+      resultsettable: INFO

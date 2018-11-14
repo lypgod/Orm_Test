@@ -1,22 +1,34 @@
 package com.lypgod.orm.test.jpa.model.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@ToString(exclude = "users")
+@Entity
+@NoArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private RoleName roleName;
 
-//    @ManyToMany
-//    @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
-//    private List<User> users = new ArrayList<>();
+    private String description;
+
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users = new ArrayList<>();
+
+    public Role(RoleName roleName) {
+        this.roleName = roleName;
+    }
 }
