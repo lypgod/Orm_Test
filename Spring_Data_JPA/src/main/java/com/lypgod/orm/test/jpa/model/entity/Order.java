@@ -22,6 +22,6 @@ public class Order {
     @Column(columnDefinition = "INTEGER DEFAULT 0")
     private Integer quantity;
 
-    @ManyToOne()
+    @ManyToOne
     private User user;
 }

@@ -93,7 +93,7 @@ public class UserRepositoryTest {
         this.userRepository.save(user1);
 
         log.warn("----- select -----------------------------------------------------------------------------------");
-        Order order = this.orderRepository.findById(1).orElseThrow(Exception::new);
+        Order order = this.orderRepository.findById(1L).orElseThrow(Exception::new);
         log.warn(order);
         log.warn(order.getUser());
         log.warn(this.userRepository.findById(1).orElseThrow(Exception::new));
